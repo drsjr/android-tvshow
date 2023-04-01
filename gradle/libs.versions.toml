@@ -62,6 +62,7 @@ coil = { module = "io.coil-kt:coil", version.ref = "coil"}
 okhttp_bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp"}
 okhttp = { module = "com.squareup.okhttp3:okhttp" }
 okhttp_logging = { module = "com.squareup.okhttp3:logging-interceptor" }
+okhttp_mockwebserver = { module = "com.squareup.okhttp3:mockwebserver" }
 
 # Retrofit
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}

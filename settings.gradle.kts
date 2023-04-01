@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "android-tvshow"
 include(":app")
+include(":data:tvmave")
