@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_catalog"
+    app:startDestination="@id/tvShowListCatalog">
+
+    <fragment
+        android:id="@+id/tvShowListCatalog"
+        android:name="tour.donnees.catalog.view.TvShowListFragment"
+        android:label="@string/activity_name"
+        tools:layout="@layout/fragment_tv_show_list"/>
+
+</navigation>

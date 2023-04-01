@@ -17,7 +17,7 @@ val NetworkModule = module {
 private fun getOkHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.HEADERS
         })
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY

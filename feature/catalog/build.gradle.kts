@@ -1,34 +1,26 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
-
 android {
-    namespace = "tour.donnees.tvmaze"
+    namespace = "tour.donnees.catalog"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "tour.donnees.tvmaze"
         minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
-        }
-        getByName("debug") {
+        release {
             isMinifyEnabled = false
-            isShrinkResources = false
-            isDebuggable = true
-            proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -36,25 +28,20 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+
     buildFeatures {
         viewBinding = true
     }
 
-    packagingOptions {
-
-        pickFirst ("META-INF/LICENSE.md")
-        pickFirst ("**/libfbjni.so")
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
-
 }
 
 dependencies {
 
-    //Modules
-    implementation(project(":feature:catalog"))
+    // Modules
+    implementation(project(":data:tvmave"))
 
     //AndroidX
     implementation(libs.androidx.navigationfragment)
