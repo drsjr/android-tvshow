@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import tour.donnees.data.tvmaze.datasource.remote.api.TvMazeApi
+import tour.donnees.data.tvmaze.datasource.remote.dto.SearchedDTO
 import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
 
 class RemoteDataSource(
@@ -17,6 +18,15 @@ class RemoteDataSource(
         } catch (e: HttpException) {
             emit(Result.failure(e))
         }
+    }
 
+    suspend fun getShowBySearch(searchText: String): Flow<Result<Collection<SearchedDTO>>> = flow {
+        try {
+            api.getShowBySearch(searchText).apply {
+                emit(Result.success(this))
+            }
+        } catch (e: HttpException) {
+            emit(Result.failure(e))
+        }
     }
 }

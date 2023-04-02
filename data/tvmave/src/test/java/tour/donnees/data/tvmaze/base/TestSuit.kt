@@ -47,6 +47,6 @@ open class TestSuit {
 
     companion object {
         const val SHOWS_HTTP_200 = "shows/response_200"
-        const val SHOWS_HTTP_429 = "shows/response_429"
+        const val SEARCH_HTTP_200 = "search/shows/response_200"
     }
 }

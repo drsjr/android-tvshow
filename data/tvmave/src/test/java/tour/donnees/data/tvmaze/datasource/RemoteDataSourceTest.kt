@@ -15,7 +15,7 @@ class RemoteDataSourceTest: TestSuit() {
     private val dataSource = RemoteDataSource(getAPI())
 
     @Test
-    fun `Test getShowByPage from RemoteDataSource with SuccessTest getShowByPage from RemoteDataSource with Error`() {
+    fun `Test getShowByPage from RemoteDataSource with SuccessTest`() {
 
         mockResponse(SHOWS_HTTP_200, 200)
 
@@ -37,6 +37,33 @@ class RemoteDataSourceTest: TestSuit() {
 
         runTest {
             dataSource.getShowsByPage(1).collect { result ->
+                Assert.assertThrows(HttpException::class.java, result::getOrThrow)
+            }
+        }
+    }
+
+
+    @Test
+    fun `Test getShowBySearch from RemoteDataSource with Success`() {
+
+        mockResponse(SEARCH_HTTP_200, 200)
+
+        runTest {
+            dataSource.getShowBySearch("test").collect { result ->
+                result.getOrNull()?.apply {
+                    Assert.assertEquals(10, this.size)
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `Test getShowBySearch from RemoteDataSource with Error`() {
+
+        mockResponse(SEARCH_HTTP_200, 429)
+
+        runTest {
+            dataSource.getShowBySearch("test").collect { result ->
                 Assert.assertThrows(HttpException::class.java, result::getOrThrow)
             }
         }

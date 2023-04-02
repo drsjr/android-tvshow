@@ -43,4 +43,32 @@ class TvShowRepositoryImplTest: TestSuit() {
             }
         }
     }
+
+    @Test
+    fun `Text getShowsBySearch from TvShowRepository with Success`() {
+
+        mockResponse(SEARCH_HTTP_200, 200)
+
+        runTest {
+            repositoryImpl.getShowBySearch("test").collect { result ->
+                result.getOrNull()?.apply {
+                    Assert.assertEquals(10, this.size)
+                    //Assert.assertEquals("Kirby Buckets", this.toList()[0].name)
+                    //Assert.assertEquals("Downton Abbey", this.toList()[1].name)
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `Text getShowsBySearch from TvShowRepository with Error`() {
+
+        mockResponse(SEARCH_HTTP_200, 429)
+
+        runTest {
+            repositoryImpl.getShowBySearch("test").collect { result ->
+                Assert.assertThrows(HttpException::class.java, result::getOrThrow)
+            }
+        }
+    }
 }
