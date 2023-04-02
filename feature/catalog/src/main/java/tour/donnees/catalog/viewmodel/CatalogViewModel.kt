@@ -11,17 +11,19 @@ import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
 import tour.donnees.data.tvmaze.repository.TvShowRepository
 
 class CatalogViewModel(
-    private val tvShowRepository: TvShowRepository
+    private val tvShowRepository: TvShowRepository,
+    private val pagination: Pagination<ShowDTO>
 ): ViewModel() {
 
-    val pagination = Pagination()
-    private val allShowList = mutableListOf<ShowDTO>()
+    private val _isLoading = MutableLiveData(false)
+    val isLoading = _isLoading as LiveData<Boolean>
+
     private val _collection = MutableLiveData<List<ShowDTO>>()
     val collection = _collection as LiveData<List<ShowDTO>>
 
-    fun getTvShowCatalogByPage() {
+    private fun getTvShowCatalogByPage() {
         viewModelScope.launch(Dispatchers.IO) {
-            tvShowRepository.getShowsByPages(pagination.loadNewPage()).collect { result ->
+            tvShowRepository.getShowsByPages(pagination.nextPage()).collect { result ->
                 result.fold(::loadTvShow) {
                     it.message
                 }
@@ -30,13 +32,23 @@ class CatalogViewModel(
     }
 
     private fun loadTvShow(tvShows: Collection<ShowDTO>) {
-        allShowList.addAll(tvShows)
-        pagination.addNewList(allShowList.size)
+        pagination.addAll(tvShows)
         loadMoreTvShow()
     }
 
     fun loadMoreTvShow() {
-        val current = pagination.getItemPage()
-        _collection.postValue(allShowList.subList(current, pagination.getMore()))
+        isLoading()
+        if (pagination.hasMore()) {
+            _collection.postValue(pagination.nextItems().toList())
+        } else {
+            getTvShowCatalogByPage()
+        }
     }
+
+    fun shouldLoadMore() = (_isLoading.value?.not() ?: false)
+
+    fun isLoading() = _isLoading.postValue(true)
+
+    fun notLoading() = _isLoading.postValue(false)
+
 }

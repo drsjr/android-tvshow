@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import tour.donnees.catalog.databinding.FragmentTvShowListBinding
+import tour.donnees.catalog.extansion.isLastItemVisible
+import tour.donnees.catalog.extansion.showIf
+import tour.donnees.catalog.extansion.toObserve
 import tour.donnees.catalog.viewmodel.CatalogViewModel
 
 class TvShowListFragment : Fragment() {
@@ -30,10 +33,8 @@ class TvShowListFragment : Fragment() {
 
         with(binding.tvShowList){
             layoutManager = when (resources.configuration.orientation) {
-                Configuration.ORIENTATION_LANDSCAPE ->
-                    GridLayoutManager(context, 3)
-                else ->
-                    GridLayoutManager(context, 2)
+                Configuration.ORIENTATION_LANDSCAPE -> GridLayoutManager(context, 3)
+                else -> GridLayoutManager(context, 2)
             }
 
             adapter = showAdapter
@@ -44,15 +45,19 @@ class TvShowListFragment : Fragment() {
     }
 
     private fun initObservables() {
-        viewModel.collection.observe(viewLifecycleOwner) {
+        toObserve(viewModel.collection) {
             showAdapter.updateAdapter(it)
+            viewModel.notLoading()
+        }
+        toObserve(viewModel.isLoading) {
+            binding.progressBar.showIf(it)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservables()
-        if (savedInstanceState == null) viewModel.getTvShowCatalogByPage()
+        if (savedInstanceState == null) viewModel.loadMoreTvShow()
     }
 
     private fun endlessScrolling(recyclerView: RecyclerView) {
@@ -63,13 +68,10 @@ class TvShowListFragment : Fragment() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
-
-                if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == showAdapter.itemCount - 1) {
-                    if (/*!viewModel.isLoading() && viewModel.hasMorePages()*/viewModel.pagination.hasMore()) {
+                if (viewModel.shouldLoadMore()) {
+                    if (recyclerView.layoutManager.isLastItemVisible(showAdapter.getLastIndex())
+                                && viewModel.shouldLoadMore()) {
                         viewModel.loadMoreTvShow()
-                    } else {
-                        viewModel.getTvShowCatalogByPage()
                     }
                 }
             }

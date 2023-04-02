@@ -42,6 +42,7 @@ dependencies {
 
     // Modules
     implementation(project(":data:tvmave"))
+    testImplementation(project(":data:tvmave"))
 
     //AndroidX
     implementation(libs.androidx.navigationfragment)
