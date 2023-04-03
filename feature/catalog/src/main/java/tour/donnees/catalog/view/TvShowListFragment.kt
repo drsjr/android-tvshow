@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import tour.donnees.catalog.R
 import tour.donnees.catalog.databinding.FragmentTvShowListBinding
 import tour.donnees.catalog.extansion.isLastItemVisible
 import tour.donnees.catalog.extansion.showIf
@@ -52,6 +54,11 @@ class TvShowListFragment : Fragment() {
         toObserve(viewModel.isLoading) {
             binding.progressBar.showIf(it)
         }
+        toObserve(viewModel.searchedCollection) {
+            showAdapter.updateAdapter(it)
+            viewModel.notLoading()
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,13 +75,19 @@ class TvShowListFragment : Fragment() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (viewModel.shouldLoadMore()) {
-                    if (recyclerView.layoutManager.isLastItemVisible(showAdapter.getLastIndex())
-                                && viewModel.shouldLoadMore()) {
+                if (viewModel.isLoadingInProgress() && isIconified()) {
+                    if (recyclerView.layoutManager.isLastItemVisible(showAdapter.getLastIndex())) {
                         viewModel.loadMoreTvShow()
                     }
                 }
             }
         })
+    }
+
+    private fun isIconified(): Boolean {
+        return (activity?.let {
+            it as CatalogActivity
+            it.isIconified()
+        } ?: false)
     }
 }

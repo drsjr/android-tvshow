@@ -32,6 +32,7 @@ class TvShowAdapter: RecyclerView.Adapter<ShowViewHolder>() {
     }
 
     fun updateAdapter(list: List<ShowDTO>) {
+        values.clear()
         values.addAll(list)
         notifyDataSetChanged()
     }

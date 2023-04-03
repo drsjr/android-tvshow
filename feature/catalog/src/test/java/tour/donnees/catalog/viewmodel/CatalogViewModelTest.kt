@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
@@ -13,8 +12,8 @@ import org.junit.Rule
 import org.junit.Test
 import tour.donnees.catalog.base.CoroutineDispatcher
 import tour.donnees.catalog.base.getOrAwaitValue
-import tour.donnees.catalog.model.Pagination
-import tour.donnees.catalog.model.PaginationImpl
+import tour.donnees.catalog.util.Pagination
+import tour.donnees.catalog.util.PaginationImpl
 import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
 import tour.donnees.data.tvmaze.repository.TvShowRepository
 
@@ -65,9 +64,25 @@ class CatalogViewModelTest {
 
             viewModel.loadMoreTvShow()
 
-            Assert.assertEquals(10, viewModel.collection.getOrAwaitValue().size)
+            Assert.assertEquals(20, viewModel.collection.getOrAwaitValue().size)
 
             coVerify(atMost = 1) { repository.getShowsByPages(any()) }
+        }
+    }
+
+    @Test
+    fun `Test getTvShowBySearch and call repository just once return Success`() {
+        coEvery { repository.getShowBySearch(any()) } returns flow {
+            emit(Result.success(getShowDTOList().toList().subList(0, 10)))
+        }
+
+        runTest {
+            viewModel.getTvShowBySearch("te")
+            viewModel.getTvShowBySearch("tes")
+            viewModel.getTvShowBySearch("test")
+
+            Assert.assertEquals(10, viewModel.searchedCollection.getOrAwaitValue().size)
+            coVerify(atMost = 1) { repository.getShowBySearch(any()) }
         }
     }
 

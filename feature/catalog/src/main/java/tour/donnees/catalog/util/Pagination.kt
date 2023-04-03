@@ -1,6 +1,7 @@
-package tour.donnees.catalog.model
+package tour.donnees.catalog.util
 
 import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
+import java.math.BigInteger
 
 abstract class Pagination<T>(
     var items: Int = 0,
@@ -12,6 +13,7 @@ abstract class Pagination<T>(
     fun addAll(newItems: Collection<T>) = collection.addAll(newItems)
     fun getCollection(): Collection<T> = collection
     abstract fun nextItems(): Collection<T>
+    abstract fun currentItems(): Collection<T>
 }
 
 class PaginationImpl(
@@ -19,12 +21,15 @@ class PaginationImpl(
     items: Int = 0
 ): Pagination<ShowDTO>(page, items) {
     override fun nextItems(): Collection<ShowDTO> {
-        val current = items
         if ((items + 10) < getCollection().size) {
             items += 10
         } else {
             items = getCollection().size
         }
-        return  getCollection().toList().subList(current, items)
+        return currentItems()
+    }
+
+    override fun currentItems(): Collection<ShowDTO> {
+        return getCollection().toList().subList(BigInteger.ZERO.toInt(), items)
     }
 }

@@ -12,7 +12,7 @@ class TvShowRepositoryImpl(
         return remoteDataSource.getShowsByPage(page)
     }
 
-    override suspend fun getShowBySearch(searchText: String): Flow<Result<Collection<SearchedDTO>>> {
+    override suspend fun getShowBySearch(searchText: String): Flow<Result<Collection<ShowDTO>>> {
         return remoteDataSource.getShowBySearch(searchText)
     }
 }

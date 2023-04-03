@@ -6,5 +6,5 @@ import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
 
 interface TvShowRepository {
     suspend fun getShowsByPages(page: Int): Flow<Result<Collection<ShowDTO>>>
-    suspend fun getShowBySearch(searchText: String): Flow<Result<Collection<SearchedDTO>>>
+    suspend fun getShowBySearch(searchText: String): Flow<Result<Collection<ShowDTO>>>
 }

@@ -20,10 +20,15 @@ class RemoteDataSource(
         }
     }
 
-    suspend fun getShowBySearch(searchText: String): Flow<Result<Collection<SearchedDTO>>> = flow {
+    suspend fun getShowBySearch(searchText: String): Flow<Result<Collection<ShowDTO>>> = flow {
         try {
             api.getShowBySearch(searchText).apply {
-                emit(Result.success(this))
+                val collection: Collection<ShowDTO> = this.toList().map { searchedDTO ->
+                    searchedDTO.show ?: ShowDTO()
+                }.filter {
+                    it.name != null && it.name.isNotBlank()
+                }
+                emit(Result.success(collection))
             }
         } catch (e: HttpException) {
             emit(Result.failure(e))
