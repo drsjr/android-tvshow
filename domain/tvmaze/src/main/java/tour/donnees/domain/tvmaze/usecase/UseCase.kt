@@ -8,5 +8,4 @@ interface UseCase<P, R> {
 }
 
 interface GetShowListByPageUseCase: UseCase<Int, Collection<Show>>
-
 interface GetShowListBySearchUseCase: UseCase<String, Collection<Show>>

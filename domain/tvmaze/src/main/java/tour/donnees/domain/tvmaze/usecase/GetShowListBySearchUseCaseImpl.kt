@@ -10,6 +10,7 @@ import tour.donnees.domain.tvmaze.model.mapTo
 class GetShowListBySearchUseCaseImpl(
     private val repository: TvShowRepository
 ): GetShowListBySearchUseCase {
+
     override fun invoke(param: String): Flow<Result<Collection<Show>>> = flow {
         repository.getShowBySearch(param).collect { result ->
             result.fold({
@@ -19,7 +20,6 @@ class GetShowListBySearchUseCaseImpl(
             })
         }
     }
-
 
     private fun success(collection: Collection<ShowDTO>): Result<Collection<Show>> {
         return Result.success(

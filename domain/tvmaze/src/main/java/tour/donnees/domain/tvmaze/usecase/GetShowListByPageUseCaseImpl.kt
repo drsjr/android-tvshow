@@ -10,6 +10,7 @@ import tour.donnees.domain.tvmaze.model.mapTo
 class GetShowListByPageUseCaseImpl(
     private val repository: TvShowRepository
 ): GetShowListByPageUseCase {
+
     override fun invoke(param: Int): Flow<Result<Collection<Show>>> = flow {
         repository.getShowsByPages(param).collect { result ->
             result.fold({
@@ -19,7 +20,6 @@ class GetShowListByPageUseCaseImpl(
             })
         }
     }
-
 
     private fun success(collection: Collection<ShowDTO>): Result<Collection<Show>> {
         return Result.success(
