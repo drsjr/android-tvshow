@@ -16,3 +16,4 @@ rootProject.name = "android-tvshow"
 include(":app")
 include(":data:tvmave")
 include(":feature:catalog")
+include(":domain:tvmaze")
