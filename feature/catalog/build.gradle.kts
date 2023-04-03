@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -42,6 +44,7 @@ dependencies {
 
     // Modules
     implementation(project(":data:tvmave"))
+    implementation(project(":domain:tvmaze"))
     testImplementation(project(":data:tvmave"))
 
     //AndroidX

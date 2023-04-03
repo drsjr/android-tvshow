@@ -2,41 +2,108 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/container">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/itemShowImage"
-            app:layout_constraintDimensionRatio="4:3"
-            android:minHeight="300dp"
-            android:minWidth="200dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
             android:src="@drawable/ic_launcher_background"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/itemShowDetailContainer"
+            app:layout_constraintTop_toTopOf="@id/itemShowDetailContainer"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@id/itemShowImage"
             android:contentDescription="@null" />
 
+        <LinearLayout
+            android:id="@+id/itemShowDetailContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@id/itemShowImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/itemShowImage">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:text="@string/item_detail_name" />
+
+            <TextView
+                android:id="@+id/itemShowDetailName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"
+                tools:text="Grey's Anatomy" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="@string/item_detail_genre" />
+
+            <TextView
+                android:id="@+id/itemShowDetailGenre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textSize="18sp"
+                tools:text="Commedy" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:text="@string/item_detail_schedule" />
+
+            <TextView
+                android:id="@+id/itemShowDetailReleaseDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                tools:text="20h 12/12/2012" />
+
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/itemShowTitle"
+            android:id="@+id/itemShowDetailSummaryLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/itemShowImage"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/itemShowDetailContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="100 Years" />
+            android:textSize="18sp"
+            android:text="@string/item_detail_summary" />
+
+        <TextView
+            android:id="@+id/itemShowDetailSummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/itemShowDetailSummaryLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="14sp"
+            tools:text="ajsdflkjasdfkjasldkfjaklsdjfklasjdflkajdfasdlkfjalksdjflkadjflkajdflkajsdflkajsdflkjasdlkfjaslkdfjalkdfjaslkdfjasdlkfjalksdjflaksdjflkasjdflkajdflkasjdflkajsdflkasjdflkasdjflksdjflkasjdflkasjdflkjasdflkjasdlkfjalskdfjalks" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

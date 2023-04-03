@@ -14,8 +14,11 @@ import tour.donnees.catalog.base.CoroutineDispatcher
 import tour.donnees.catalog.base.getOrAwaitValue
 import tour.donnees.catalog.util.Pagination
 import tour.donnees.catalog.util.PaginationImpl
-import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
-import tour.donnees.data.tvmaze.repository.TvShowRepository
+import tour.donnees.data.tvmaze.datasource.remote.dto.show.ShowDTO
+import tour.donnees.domain.tvmaze.model.Show
+import tour.donnees.domain.tvmaze.model.mapTo
+import tour.donnees.domain.tvmaze.usecase.GetShowListByPageUseCase
+import tour.donnees.domain.tvmaze.usecase.GetShowListBySearchUseCase
 
 
 @ExperimentalCoroutinesApi
@@ -27,18 +30,24 @@ class CatalogViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private val repository: TvShowRepository = mockk()
-    private val pagination: Pagination<ShowDTO> = PaginationImpl()
-    private val viewModel = CatalogViewModel(repository, pagination)
 
+    private val getShowListBySearchUseCase: GetShowListBySearchUseCase = mockk()
+    private val getShowListByPageUseCase: GetShowListByPageUseCase = mockk()
+    private val pagination: Pagination<Show> = PaginationImpl()
+
+    private val viewModel = CatalogViewModel(
+        getShowListByPageUseCase,
+        getShowListBySearchUseCase,
+        pagination
+    )
 
     @Test
     fun `Test loadMoreTvShow and call repository return Success`() {
-        coEvery { repository.getShowsByPages(any()) } returns flow {
+        coEvery { getShowListByPageUseCase(any()) } returns flow {
             emit(
                 Result.success(
                     listOf(
-                        ShowDTO(name = "Test")
+                        ShowDTO(name = "Test").mapTo()
                     )
                 )
             )
@@ -47,14 +56,14 @@ class CatalogViewModelTest {
         runTest {
             viewModel.loadMoreTvShow()
             Assert.assertEquals(1, viewModel.collection.getOrAwaitValue().size)
-            coVerify { repository.getShowsByPages(any()) }
+            coVerify { getShowListByPageUseCase(any()) }
         }
     }
 
     @Test
     fun `Test loadMoreTvShow and don't call repository return Success`() {
-        coEvery { repository.getShowsByPages(any()) } returns flow {
-            emit(Result.success(getShowDTOList()))
+        coEvery { getShowListByPageUseCase(any()) } returns flow {
+            emit(Result.success(getShowDTOList().map { it.mapTo() }))
         }
 
         runTest {
@@ -66,14 +75,14 @@ class CatalogViewModelTest {
 
             Assert.assertEquals(20, viewModel.collection.getOrAwaitValue().size)
 
-            coVerify(atMost = 1) { repository.getShowsByPages(any()) }
+            coVerify(atMost = 1) { getShowListByPageUseCase(any()) }
         }
     }
 
     @Test
     fun `Test getTvShowBySearch and call repository just once return Success`() {
-        coEvery { repository.getShowBySearch(any()) } returns flow {
-            emit(Result.success(getShowDTOList().toList().subList(0, 10)))
+        coEvery { getShowListBySearchUseCase(any()) } returns flow {
+            emit(Result.success(getShowDTOList().toList().subList(0, 10).map { it.mapTo() }))
         }
 
         runTest {
@@ -82,7 +91,7 @@ class CatalogViewModelTest {
             viewModel.getTvShowBySearch("test")
 
             Assert.assertEquals(10, viewModel.searchedCollection.getOrAwaitValue().size)
-            coVerify(atMost = 1) { repository.getShowBySearch(any()) }
+            coVerify(atMost = 1) { getShowListBySearchUseCase(any()) }
         }
     }
 

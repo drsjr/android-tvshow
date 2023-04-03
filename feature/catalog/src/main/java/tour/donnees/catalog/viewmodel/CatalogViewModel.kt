@@ -7,27 +7,28 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tour.donnees.catalog.util.Pagination
-import tour.donnees.data.tvmaze.datasource.remote.dto.SearchedDTO
-import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
-import tour.donnees.data.tvmaze.repository.TvShowRepository
+import tour.donnees.domain.tvmaze.model.Show
+import tour.donnees.domain.tvmaze.usecase.GetShowListByPageUseCase
+import tour.donnees.domain.tvmaze.usecase.GetShowListBySearchUseCase
 
 class CatalogViewModel(
-    private val tvShowRepository: TvShowRepository,
-    private val pagination: Pagination<ShowDTO>
+    private val getShowListByPageUseCase: GetShowListByPageUseCase,
+    private val getShowListBySearchUseCase: GetShowListBySearchUseCase,
+    private val pagination: Pagination<Show>
 ): ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading = _isLoading as LiveData<Boolean>
 
-    private val _collection = MutableLiveData<List<ShowDTO>>()
-    val collection = _collection as LiveData<List<ShowDTO>>
+    private val _collection = MutableLiveData<List<Show>>()
+    val collection = _collection as LiveData<List<Show>>
 
-    private val _searchedCollection = MutableLiveData<List<ShowDTO>>()
-    val searchedCollection = _searchedCollection as LiveData<List<ShowDTO>>
+    private val _searchedCollection = MutableLiveData<List<Show>>()
+    val searchedCollection = _searchedCollection as LiveData<List<Show>>
 
     private fun getTvShowCatalogByPage() {
         viewModelScope.launch(Dispatchers.IO) {
-            tvShowRepository.getShowsByPages(pagination.nextPage()).collect { result ->
+            getShowListByPageUseCase(pagination.nextPage()).collect { result ->
                 result.fold(::loadTvShow) {
                     it.message
                 }
@@ -40,22 +41,21 @@ class CatalogViewModel(
             if (it.length < 4) return@let
             isLoading()
             viewModelScope.launch(Dispatchers.IO) {
-                tvShowRepository.getShowBySearch(searchText).collect { result ->
+                getShowListBySearchUseCase(it).collect { result ->
                     result.fold(::loadTvShowSearched) {
                         it.message
                     }
                 }
             }
         }
-
     }
 
-    private fun loadTvShow(tvShows: Collection<ShowDTO>) {
+    private fun loadTvShow(tvShows: Collection<Show>) {
         pagination.addAll(tvShows)
         loadMoreTvShow()
     }
 
-    private fun loadTvShowSearched(tvShows: Collection<ShowDTO>) {
+    private fun loadTvShowSearched(tvShows: Collection<Show>) {
         _searchedCollection.postValue(tvShows.toList())
     }
 

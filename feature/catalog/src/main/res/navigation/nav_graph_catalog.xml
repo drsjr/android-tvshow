@@ -9,6 +9,25 @@
         android:id="@+id/tvShowListCatalog"
         android:name="tour.donnees.catalog.view.TvShowListFragment"
         android:label="@string/activity_name"
-        tools:layout="@layout/fragment_tv_show_list"/>
+        tools:layout="@layout/fragment_tv_show_list">
+
+        <action
+            android:id="@+id/action_tvShowListCatalog_to_tvShowDetail"
+            app:destination="@id/tvShowDetail" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/tvShowDetail"
+        android:label="@string/fragment_detail"
+        android:name="tour.donnees.catalog.view.TvShowDetailFragment"
+        tools:layout="@layout/fragment_tv_show_detail">
+
+        <argument
+            android:name="show"
+            app:argType="tour.donnees.domain.tvmaze.model.Show" />
+
+    </fragment>
 
 </navigation>

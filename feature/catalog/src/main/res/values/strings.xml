@@ -1,5 +1,14 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="activity_name">Catalog</string>
+    <string name="fragment_detail">Detail</string>
     <string name="item_menu_search">Search</string>
+
+    <!-- Detail Fragment -->
+
+    <string name="item_detail_name">Name</string>
+    <string name="item_detail_genre">Genres</string>
+    <string name="item_detail_schedule">Schedule</string>
+    <string name="item_detail_summary">Summary</string>
+    <string name="item_detail_">Search</string>
+
 </resources>

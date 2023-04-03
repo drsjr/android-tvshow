@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import tour.donnees.catalog.R
@@ -16,7 +15,9 @@ import tour.donnees.catalog.databinding.FragmentTvShowListBinding
 import tour.donnees.catalog.extansion.isLastItemVisible
 import tour.donnees.catalog.extansion.showIf
 import tour.donnees.catalog.extansion.toObserve
+import tour.donnees.catalog.view.adapter.TvShowAdapter
 import tour.donnees.catalog.viewmodel.CatalogViewModel
+import tour.donnees.domain.tvmaze.model.Show
 
 class TvShowListFragment : Fragment() {
 
@@ -24,7 +25,7 @@ class TvShowListFragment : Fragment() {
 
     private val viewModel by activityViewModel<CatalogViewModel>()
 
-    private val showAdapter = TvShowAdapter()
+    private lateinit var showAdapter: TvShowAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +39,7 @@ class TvShowListFragment : Fragment() {
                 Configuration.ORIENTATION_LANDSCAPE -> GridLayoutManager(context, 3)
                 else -> GridLayoutManager(context, 2)
             }
-
+            showAdapter = TvShowAdapter(::navigateToDetail)
             adapter = showAdapter
             endlessScrolling(this)
         }
@@ -59,6 +60,15 @@ class TvShowListFragment : Fragment() {
             viewModel.notLoading()
         }
 
+    }
+
+    private fun navigateToDetail(show: Show) {
+
+        val bundle = Bundle()
+
+        bundle.putParcelable("show", show)
+
+        findNavController().navigate(R.id.action_tvShowListCatalog_to_tvShowDetail, bundle)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
