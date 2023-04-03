@@ -4,8 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import tour.donnees.data.tvmaze.datasource.remote.api.TvMazeApi
-import tour.donnees.data.tvmaze.datasource.remote.dto.SearchedDTO
-import tour.donnees.data.tvmaze.datasource.remote.dto.ShowDTO
+import tour.donnees.data.tvmaze.datasource.remote.dto.show.ShowDTO
 
 class RemoteDataSource(
     private val api: TvMazeApi

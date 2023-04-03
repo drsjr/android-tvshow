@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class EpisodeDTO(
     @SerializedName("airdate")
-    val airdate: String? = "",
+    val airDate: String? = "",
     @SerializedName("airstamp")
-    val airstamp: String? = "",
+    val airStamp: String? = "",
     @SerializedName("airtime")
     val airtime: String? = "",
     @SerializedName("id")

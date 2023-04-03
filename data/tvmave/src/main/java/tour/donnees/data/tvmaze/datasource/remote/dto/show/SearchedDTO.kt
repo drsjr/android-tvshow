@@ -1,4 +1,4 @@
-package tour.donnees.data.tvmaze.datasource.remote.dto
+package tour.donnees.data.tvmaze.datasource.remote.dto.show
 
 import com.google.gson.annotations.SerializedName
 
