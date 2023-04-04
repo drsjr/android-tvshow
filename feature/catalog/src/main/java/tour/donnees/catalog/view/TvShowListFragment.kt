@@ -43,17 +43,10 @@ class TvShowListFragment : Fragment() {
             }
             showAdapter = TvShowAdapter(::navigateToDetail)
             adapter = showAdapter
-            addDivider()
             endlessScrolling(this)
         }
 
         return binding.root
-    }
-
-    private fun addDivider() {
-        binding.tvShowList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        binding.tvShowList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
-
     }
 
     private fun initObservables() {

@@ -40,9 +40,6 @@ android {
 
 dependencies {
 
-    //Module
-    implementation(project(":domain:tvmaze"))
-
     // Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)

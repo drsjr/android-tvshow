@@ -19,9 +19,9 @@ Eu dividi em três módulos sem contar o módulo **:app**, segundos os padrões 
 
 Algumas importante em detrimento de outra. O fato de eu ter feito multi-módulos deixou bem mais visível a responsabilidade de cada módulo, assim melhorando a leitura e entendimento do código.
 
-Outro ponto foi eu ter utilizado o Navigation e o [ArgSage]() para passar os dados eu um Fragment para outro deixando a navegação bem mais simple.
+Outro ponto foi eu ter utilizado o Navigation e o [Safe Args](https://developer.android.com/guide/navigation/navigation-pass-data#safe-args-global) para passar os dados eu um Fragment para outro deixando a navegação bem mais simple.
 
-Criar um módulo features (Presentation Layer) vai nos permitir builds mais rápidas, poís caso isso seja implementado somente no módulo **:app**, com o tempo e o a adição de nova features acarretará na demora de compilação por estar tudo em um lugar só.
+Criar um módulo features (Presentation Layer) vai nos permitir builds mais rápidas, poís caso isso seja implementado somente no módulo **:app**, com o tempo e a adição de novas features acarretará na demora de compilação por estar tudo em um lugar só.
 
 A imagem foi gerada pelo **task** `projectDependencyGraph`, use o site [Graphviz](https://renenyffenegger.ch/notes/tools/Graphviz/examples/index), para entender como criar o grafo.
 
@@ -42,4 +42,5 @@ Problemas existem e muitos deles pretendo resolver:
  - SearchView continua aberto após ir para a tela de detalhes do Show.
  - Manter o estado da tela após o retorno da tela de detalhe.
  - Remover o icone de busca na tela de detalhe.
+ - Melhorar o Handle de Erro
   

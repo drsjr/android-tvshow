@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tour.donnees.catalog.util.Pagination
@@ -33,8 +34,10 @@ class CatalogViewModel(
     private val _episodeCollection = MutableLiveData<List<Episode>>()
     val episodes = _episodeCollection as LiveData<List<Episode>>
 
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable -> }
+
     private fun getTvShowCatalogByPage() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             getShowListByPageUseCase(showPagination.nextPage()).collect { result ->
                 result.fold(::loadTvShow) {
                     it.message
@@ -44,7 +47,7 @@ class CatalogViewModel(
     }
 
     fun getEpisodeByShowId(showId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             getEpisodeByShowIdUseCase(showId).collect { result ->
                 result.fold(::loadEpisode) {
                     it.message
@@ -57,7 +60,7 @@ class CatalogViewModel(
         searchText?.let {
             if (it.length < 4) return@let
             isLoading()
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
                 getShowListBySearchUseCase(it).collect { result ->
                     result.fold(::loadTvShowSearched) {
                         it.message
