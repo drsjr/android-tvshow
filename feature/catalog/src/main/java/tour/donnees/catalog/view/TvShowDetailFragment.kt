@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -45,10 +46,15 @@ class TvShowDetailFragment : Fragment() {
         with(binding.tvShowSearchedList){
             layoutManager = LinearLayoutManager(context)
             adapter = concatAdapter
+            addDivider()
             endlessScrolling(this)
         }
 
         return binding.root
+    }
+
+    private fun addDivider() {
+        binding.tvShowSearchedList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
     private fun initObservables() {
