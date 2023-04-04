@@ -27,6 +27,6 @@ O Aplicativo é bem simple, ele basicamente lista as Séries que a api [TvMaze](
 O seu uso é bem simples:
 
 
- <img src="source/tvmaze.git" width="400" height="800"> 
+ <img src="https://github.com/drsjr/android-tvshow/blob/master/source/tvmaze.gif" width="400" height="800"> 
 
 
