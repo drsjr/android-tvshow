@@ -28,6 +28,22 @@
             android:name="show"
             app:argType="tour.donnees.domain.tvmaze.model.Show" />
 
+        <action
+            android:id="@+id/action_tvShowDetail_to_tvEpisodeDetail"
+            app:destination="@id/tvEpisodeDetail" />
+
     </fragment>
+
+    <dialog
+        android:id="@+id/tvEpisodeDetail"
+        android:label="@string/fragment_detail"
+        android:name="tour.donnees.catalog.view.EpisodeBottomSheetFragment"
+        tools:layout="@layout/fragment_episode_bottom_sheet">
+
+        <argument
+            android:name="episode"
+            app:argType="tour.donnees.domain.tvmaze.model.Episode" />
+
+    </dialog>
 
 </navigation>

@@ -9,7 +9,7 @@ import tour.donnees.catalog.databinding.ItemEpisodeBinding
 import tour.donnees.catalog.extansion.showIf
 import tour.donnees.domain.tvmaze.model.Episode
 
-class TvShowEpisodeAdapter: RecyclerView.Adapter<TvShowEpisodeAdapter.EpisodeViewHolder>() {
+class TvShowEpisodeAdapter(private val onClick: (Episode) -> Unit = {}) : RecyclerView.Adapter<TvShowEpisodeAdapter.EpisodeViewHolder>() {
     private val values = mutableListOf<Episode>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
@@ -38,6 +38,10 @@ class TvShowEpisodeAdapter: RecyclerView.Adapter<TvShowEpisodeAdapter.EpisodeVie
             episodeName.text = episode.name
 
             seasonNumber.showIf(episode.number == 1)
+
+            container.setOnClickListener {
+                onClick(episode)
+            }
         }
     }
 
@@ -51,6 +55,7 @@ class TvShowEpisodeAdapter: RecyclerView.Adapter<TvShowEpisodeAdapter.EpisodeVie
         val seasonNumber: TextView = binding.itemSeasonNumber
         val episodeNumber: TextView = binding.itemEpisodeNumber
         val episodeName: TextView = binding.itemEpisodeName
+        val container = binding.itemShowDetailContainer
 
     }
 }

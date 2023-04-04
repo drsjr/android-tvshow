@@ -104,6 +104,7 @@ class CatalogViewModel(
     fun notLoading() = _isLoading.postValue(false)
     fun cleanEpisodePagination() {
         episodePagination.clear()
+        _episodeCollection.postValue(emptyList())
     }
 
 }

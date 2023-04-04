@@ -11,9 +11,14 @@
     <string name="item_detail_summary">Summary</string>
     <string name="item_detail_">Search</string>
 
-    <!-- Episode Item -->
+    <!-- Episode Item Adapter -->
 
     <string name="item_episode_label">Episode %d</string>
     <string name="item_season_label">Season %d</string>
+
+    <!-- Episode Bottom Sheet -->
+
+    <string name="item_season">Season</string>
+
 
 </resources>

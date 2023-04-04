@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import tour.donnees.catalog.R
 import tour.donnees.catalog.databinding.FragmentTvShowDetailBinding
 import tour.donnees.catalog.extansion.getLastIndex
 import tour.donnees.catalog.extansion.isLastItemVisible
@@ -18,6 +20,7 @@ import tour.donnees.catalog.extansion.toObserve
 import tour.donnees.catalog.view.adapter.TvShowDetailAdapter
 import tour.donnees.catalog.view.adapter.TvShowEpisodeAdapter
 import tour.donnees.catalog.viewmodel.CatalogViewModel
+import tour.donnees.domain.tvmaze.model.Episode
 
 class TvShowDetailFragment : Fragment() {
 
@@ -26,7 +29,7 @@ class TvShowDetailFragment : Fragment() {
     private val viewModel by activityViewModel<CatalogViewModel>()
 
     private val detailAdapter = TvShowDetailAdapter()
-    private val episodeAdapter = TvShowEpisodeAdapter()
+    private val episodeAdapter = TvShowEpisodeAdapter(::navigateToEpisodeDetail)
 
     private val args by navArgs<TvShowDetailFragmentArgs>()
 
@@ -85,12 +88,15 @@ class TvShowDetailFragment : Fragment() {
         })
     }
 
+    private fun navigateToEpisodeDetail(episode: Episode) {
+        val bundle = Bundle()
+        bundle.putParcelable("episode", episode)
+        findNavController().navigate(R.id.action_tvShowDetail_to_tvEpisodeDetail, bundle)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         viewModel.cleanEpisodePagination()
-    }
 
-    override fun onDetach() {
-        super.onDetach()
     }
 }

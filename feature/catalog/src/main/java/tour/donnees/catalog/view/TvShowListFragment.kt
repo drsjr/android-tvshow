@@ -72,11 +72,8 @@ class TvShowListFragment : Fragment() {
     }
 
     private fun navigateToDetail(show: Show) {
-
         val bundle = Bundle()
-
         bundle.putParcelable("show", show)
-
         findNavController().navigate(R.id.action_tvShowListCatalog_to_tvShowDetail, bundle)
     }
 
