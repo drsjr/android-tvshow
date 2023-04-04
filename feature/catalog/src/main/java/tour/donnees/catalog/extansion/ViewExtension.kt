@@ -18,3 +18,7 @@ fun RecyclerView.LayoutManager?.isLastItemVisible(lastIndex: Int): Boolean {
     this as LinearLayoutManager
     return (this.findLastCompletelyVisibleItemPosition() == lastIndex)
 }
+
+fun <T : RecyclerView.ViewHolder?> RecyclerView.Adapter<T>.getLastIndex(): Int {
+    return this.itemCount -1
+}

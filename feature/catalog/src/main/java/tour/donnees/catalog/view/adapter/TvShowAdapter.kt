@@ -24,8 +24,6 @@ class TvShowAdapter(private val navigation: (Show) -> Unit = {}): RecyclerView.A
 
     override fun getItemCount(): Int = values.size
 
-    fun getLastIndex(): Int = values.size - 1
-
     override fun onBindViewHolder(holder: ShowViewHolder, position: Int) {
         val show = values[position]
         holder.image

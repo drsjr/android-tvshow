@@ -7,29 +7,46 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tour.donnees.catalog.util.Pagination
+import tour.donnees.domain.tvmaze.model.Episode
 import tour.donnees.domain.tvmaze.model.Show
+import tour.donnees.domain.tvmaze.usecase.GetEpisodeByShowIdUseCase
 import tour.donnees.domain.tvmaze.usecase.GetShowListByPageUseCase
 import tour.donnees.domain.tvmaze.usecase.GetShowListBySearchUseCase
 
 class CatalogViewModel(
     private val getShowListByPageUseCase: GetShowListByPageUseCase,
     private val getShowListBySearchUseCase: GetShowListBySearchUseCase,
-    private val pagination: Pagination<Show>
+    private val getEpisodeByShowIdUseCase: GetEpisodeByShowIdUseCase,
+    private val showPagination: Pagination<Show>,
+    private val episodePagination: Pagination<Episode>
 ): ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading = _isLoading as LiveData<Boolean>
 
-    private val _collection = MutableLiveData<List<Show>>()
-    val collection = _collection as LiveData<List<Show>>
+    private val _showCollection = MutableLiveData<List<Show>>()
+    val shows = _showCollection as LiveData<List<Show>>
 
     private val _searchedCollection = MutableLiveData<List<Show>>()
-    val searchedCollection = _searchedCollection as LiveData<List<Show>>
+    val searched = _searchedCollection as LiveData<List<Show>>
+
+    private val _episodeCollection = MutableLiveData<List<Episode>>()
+    val episodes = _episodeCollection as LiveData<List<Episode>>
 
     private fun getTvShowCatalogByPage() {
         viewModelScope.launch(Dispatchers.IO) {
-            getShowListByPageUseCase(pagination.nextPage()).collect { result ->
+            getShowListByPageUseCase(showPagination.nextPage()).collect { result ->
                 result.fold(::loadTvShow) {
+                    it.message
+                }
+            }
+        }
+    }
+
+    fun getEpisodeByShowId(showId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getEpisodeByShowIdUseCase(showId).collect { result ->
+                result.fold(::loadEpisode) {
                     it.message
                 }
             }
@@ -51,8 +68,13 @@ class CatalogViewModel(
     }
 
     private fun loadTvShow(tvShows: Collection<Show>) {
-        pagination.addAll(tvShows)
+        showPagination.addAll(tvShows)
         loadMoreTvShow()
+    }
+
+    private fun loadEpisode(episodes: Collection<Episode>) {
+        episodePagination.addAll(episodes)
+        loadMoreEpisode()
     }
 
     private fun loadTvShowSearched(tvShows: Collection<Show>) {
@@ -61,17 +83,27 @@ class CatalogViewModel(
 
     fun loadMoreTvShow() {
         isLoading()
-        if (pagination.hasMore()) {
-            _collection.postValue(pagination.nextItems().toList())
+        if (showPagination.hasMore()) {
+            _showCollection.postValue(showPagination.nextItems().toList())
         } else {
             getTvShowCatalogByPage()
         }
     }
 
+    fun loadMoreEpisode() {
+        isLoading()
+        if (episodePagination.hasMore()) {
+            _episodeCollection.postValue(episodePagination.nextItems().toList())
+        } else {
+            notLoading()
+        }
+    }
+
     fun isLoadingInProgress() = (_isLoading.value?.not() ?: false)
-
     fun isLoading() = _isLoading.postValue(true)
-
     fun notLoading() = _isLoading.postValue(false)
+    fun cleanEpisodePagination() {
+        episodePagination.clear()
+    }
 
 }

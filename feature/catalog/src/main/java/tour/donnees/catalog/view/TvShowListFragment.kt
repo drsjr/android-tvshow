@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import tour.donnees.catalog.R
 import tour.donnees.catalog.databinding.FragmentTvShowListBinding
+import tour.donnees.catalog.extansion.getLastIndex
 import tour.donnees.catalog.extansion.isLastItemVisible
 import tour.donnees.catalog.extansion.showIf
 import tour.donnees.catalog.extansion.toObserve
@@ -41,21 +43,28 @@ class TvShowListFragment : Fragment() {
             }
             showAdapter = TvShowAdapter(::navigateToDetail)
             adapter = showAdapter
+            addDivider()
             endlessScrolling(this)
         }
 
         return binding.root
     }
 
+    private fun addDivider() {
+        binding.tvShowList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        binding.tvShowList.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
+
+    }
+
     private fun initObservables() {
-        toObserve(viewModel.collection) {
+        toObserve(viewModel.shows) {
             showAdapter.updateAdapter(it)
             viewModel.notLoading()
         }
         toObserve(viewModel.isLoading) {
             binding.progressBar.showIf(it)
         }
-        toObserve(viewModel.searchedCollection) {
+        toObserve(viewModel.searched) {
             showAdapter.updateAdapter(it)
             viewModel.notLoading()
         }
@@ -99,5 +108,9 @@ class TvShowListFragment : Fragment() {
             it as CatalogActivity
             it.isIconified()
         } ?: false)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
     }
 }

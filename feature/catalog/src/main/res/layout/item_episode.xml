@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemShowDetailContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/itemSeasonNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="24sp"
+        android:background="#123456"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="@string/item_season_label" />
+
+    <TextView
+        android:id="@+id/itemEpisodeNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:text="@string/item_episode_label" />
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:id="@+id/itemEpisodeName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        tools:text="Grey's Anatomy" />
+
+
+
+</LinearLayout>
