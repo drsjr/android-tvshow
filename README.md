@@ -2,7 +2,7 @@
 
 ### Resumo
 
-Este é um simples projeto Andrid utilizando a Arquitetura MVVM Clean Arch.
+Este é um simples projeto Android utilizando a Arquitetura MVVM Clean Arch.
  - Koin para injeção de dependência.
  - Coroutines + Flow para controle assíncrono do aplicativo.
  - Multi-módulos para melhor separação da responsabilidades.
@@ -17,18 +17,18 @@ Eu dividi em três módulos sem contar o módulo **:app**, segundos os padrões 
  - Domain: **:domain**:tvmaze
  - Data: **:data**:tvmaze
 
-Algumas importante em detrimento de outra. O fato de eu ter feito multi-módulos deixou bem mais visível a responsabilidade de cada módulo, assim melhorando a leitura e entendimento do código.
+O fato de eu ter feito multi-módulos deixou bem mais visível a responsabilidade de cada módulo, assim melhorando a leitura e entendimento do código.
 
-Outro ponto foi eu ter utilizado o Navigation e o [Safe Args](https://developer.android.com/guide/navigation/navigation-pass-data#safe-args-global) para passar os dados eu um Fragment para outro deixando a navegação bem mais simple.
+Outro ponto foi eu ter utilizado o Navigation e o [Safe Args](https://developer.android.com/guide/navigation/navigation-pass-data#safe-args-global) para passar os dados eu um Fragment para outro deixando a navegação bem mais simples.
 
-Criar um módulo features (Presentation Layer) vai nos permitir builds mais rápidas, poís caso isso seja implementado somente no módulo **:app**, com o tempo e a adição de novas features acarretará na demora de compilação por estar tudo em um lugar só.
+Criar o módulo *features* (Presentation Layer) vai nos permitir builds mais rápidas, poís caso isso seja implementado somente no módulo **:app**, com o tempo e a adição de novas features acarretará na demora de compilação por estar tudo em um lugar só.
 
 A imagem foi gerada pelo **task** `projectDependencyGraph`, use o site [Graphviz](https://renenyffenegger.ch/notes/tools/Graphviz/examples/index), para entender como criar o grafo.
 
 
 ### Funcionalidade
 
-O Aplicativo é bem simple, ele basicamente lista as Séries que a api [TvMaze](https://www.tvmaze.com/api) fornece através da [API](https://github.com/drsjr/android-tvshow/blob/master/data/tvmave/src/main/java/tour/donnees/data/tvmaze/datasource/remote/api/TvMazeApi.kt).
+O Aplicativo é bem simples, ele basicamente lista as Séries que vem da *API* [TvMaze](https://www.tvmaze.com/api) fornece através da [API](https://github.com/drsjr/android-tvshow/blob/master/data/tvmave/src/main/java/tour/donnees/data/tvmaze/datasource/remote/api/TvMazeApi.kt).
 
 O seu uso é bem simples:
 
@@ -41,6 +41,6 @@ O seu uso é bem simples:
 Problemas existem e muitos deles pretendo resolver:
  - SearchView continua aberto após ir para a tela de detalhes do Show.
  - Manter o estado da tela após o retorno da tela de detalhe.
- - Remover o icone de busca na tela de detalhe.
+ - Remover o ícone de busca na tela de detalhe.
  - Melhorar o Handle de Erro
   
